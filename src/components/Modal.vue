@@ -1,8 +1,8 @@
 <template>
-  <div class="Modal" v-if="modalInfos">
+  <div class="Modal" v-if="modalMessage">
     <div class="Modal__message"
          @click="closeModal"
-         v-html="modalInfos.message">
+         v-html="modalMessage">
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@ export default {
   name: "Modal",
   computed: {
     ...mapGetters({
-      modalInfos: "modal",
+      modalMessage: "modal",
       isPlaying: "isPlaying"
     })
   },
@@ -39,11 +39,19 @@ export default {
   align-items: center;
   z-index: 100;
   background: rgba(0, 0, 0, 0.8);
-  cursor: pointer;
+  padding: 30px;
 
   &__message {
     @include font(bold, 75, 100);
     color: $color-yellow;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    &__message {
+      font-size: 50px;
+      line-height: 50px;
+    }
   }
 }
 </style>

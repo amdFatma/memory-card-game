@@ -1,10 +1,12 @@
 <template>
-  <div class="Card">
+  <div class="Card" v-if="infos">
     <div class="Card__item Card__item--face">
-      <img class="Card__itemImg" src="../../static/img/interrogation.png" />
+      <img class="Card__itemImg"
+           src="../../static/img/interrogation.png" />
     </div>
     <div class="Card__item Card__item--back">
-      <img class="Card__itemImg" :src="imagePath(infos.image)" />
+      <img class="Card__itemImg"
+           :src="imagePath(infos.image)" />
     </div>
   </div>
 </template>
@@ -20,7 +22,7 @@ export default {
   },
   methods: {
     imagePath: function(image) {
-      return require("../../static/" + image + ".png");
+      return require("../../static/img/monuments/" + image + ".png");
     }
   }
 };
@@ -80,14 +82,33 @@ export default {
   }
 
   &.matched {
-
     .Card__item {
-
       &--back {
         opacity: 0.5;
 
         .Card__itemImg {
           animation: dance linear 1000ms;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    height: 120px;
+    width: 80px;
+
+    &__item {
+      height: 120px;
+      width: 80px;
+      margin: auto;
+
+      &Img {
+        width: 40px;
+      }
+
+      &--back {
+        .Card__itemImg {
+          width: 60px;
         }
       }
     }

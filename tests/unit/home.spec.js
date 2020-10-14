@@ -1,21 +1,44 @@
 import Home from "@/pages/Home.vue";
+import Vuex from "vuex";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
 
-/*describe("HelloWorld.vue", () => {
-  it("renders props.msg when passed", () => {
-    const msg = "new message";
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg }
-    });
-    expect(wrapper.text()).toMatch(msg);
-  });
-}); */
+const localVue = createLocalVue();
+localVue.use(Vuex);
 
 describe("Home component", () => {
-  it("a le hook `name`", () => {
+  test("a le hook `name`", () => {
     expect(Home.name).toEqual("Home");
   });
 
-  it('a les bons composants', () => {
-    expect(typeof Home.components.Card).toEqual('function');
+  test("a le composant card", () => {
+    expect(typeof Home.components.CardComponent).toEqual("function");
+  });
+});
+
+describe('Home.vue', () => {
+  let actions;
+  let store;
+  let getters;
+
+  beforeEach(() => {
+    actions = {
+      setModal: jest.fn()
+    };
+    getters = {
+      isPlaying: () => false
+    };
+    store = new Vuex.Store({
+      state: {},
+      getters,
+      actions
+    });
+  });
+
+  test('should dispatch action when created', () => {
+    shallowMount(Home, {
+      localVue,
+      store
+    });
+    expect(actions.setModal).toHaveBeenCalled();
   });
 });

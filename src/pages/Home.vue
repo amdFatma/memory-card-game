@@ -29,7 +29,8 @@ import { cardsList } from "@/js/cardsList";
 import { mapGetters } from "vuex";
 import Vue from "vue";
 
-const timerGame = 60;
+const timerGame = 45;
+const maxFlip = 8;
 
 export default {
   name: "Home",
@@ -62,7 +63,7 @@ export default {
     }
   },
   created: function() {
-    this.$store.dispatch("setModal", {message: "Click to play"});
+    this.$store.dispatch("setModal", "Click to play");
   },
   beforeDestroy() {
     clearInterval(this.timerRefresh);
@@ -75,6 +76,9 @@ export default {
       }
       return cardsList;
     },
+    canFlipCard(card) {
+      return card && !card.isMatched && !this.flippedCards.includes(card);
+    },
     flipCard: function(card) {
       if (this.canFlipCard(card)) {
         Vue.set(card, "isFlipped", true);
@@ -86,16 +90,13 @@ export default {
         }
       }
     },
-    canFlipCard(card) {
-      return card && !card.isMatched && !this.flippedCards.includes(card);
-    },
     checkCardMatch() {
       setTimeout(() => {
         if (this.flippedCards[0].id === this.flippedCards[1].id) {
           this.flippedCards.forEach(card => (card.isMatched = true));
           this.flips++;
-          if (this.flips === 8) {
-            this.$store.dispatch("setModal", {message: "Victory <br/> click to play"});
+          if (this.flips === maxFlip) {
+            this.$store.dispatch("setModal", "Victory <br/> click to play");
             clearInterval(this.timerRefresh);
           }
         } else {
@@ -114,7 +115,7 @@ export default {
     },
     gameOver: function() {
       clearInterval(this.timerRefresh);
-      this.$store.dispatch("setModal", {message: "Game over <br/> click to play"});
+      this.$store.dispatch("setModal", "Game over <br/> click to play");
     },
     resetGame: function() {
       this.timer = timerGame;
@@ -165,11 +166,18 @@ export default {
   }
 
   @media (max-width: 768px) {
-    &__container {
-      grid-template-columns: repeat(2, auto);
+    &__title {
+      font-size: 20px;
+      line-height: 30px;
+    }
 
-      &Details {
-        flex-direction: column;
+    &__container {
+      grid-gap: 5px;
+      margin-top: 25px;
+
+      &Info {
+        font-size: 20px;
+        line-height: 20px;
       }
     }
   }
