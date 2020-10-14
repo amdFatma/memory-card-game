@@ -1,0 +1,4 @@
+@mixin fontfamily($font-family) {
+    font-family: map-get($fonts, $font-family), sans-serif;
+}
+

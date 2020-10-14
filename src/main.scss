@@ -1,0 +1,18 @@
+@import "/scss/mixins/index";
+@import "/scss/config/index";
+
+@each $key, $value in $fonts {
+    @include fontimport($value);
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
